@@ -15,6 +15,7 @@ sitemesh扩展标签库，简化页面模版定义,实现页面继承的概念�
   
   <sm:attr> 子页面可以用该标签定义request的属性值，只能被当前页面和上层的模板页面使用
 
+使用指南： https://github.com/leyr/FreeSitemesh/wiki/FreeSitemesh%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97
 
 
 
