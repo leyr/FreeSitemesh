@@ -1,9 +1,11 @@
 FreeSitemesh
 ============
 
-sitemesh扩展标签库，简化页面模版定义,实现页面继承的概念， 支持模板嵌套
+sitemesh扩展标签库，简化页面模版定义,实现页面继承的概念， 支持模板嵌套。
 
-在原生的sitemesh上扩展了几个标签：
+支持jsp、html、freemark、velocity等任意视图文件格式。
+
+目前扩展的标签有：
 
   <sm:template> 定义引用的模板路径
   
