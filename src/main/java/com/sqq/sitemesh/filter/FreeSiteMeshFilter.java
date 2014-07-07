@@ -1,6 +1,7 @@
 package com.sqq.sitemesh.filter;
 
 import javax.servlet.Filter;
+import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 
 import org.sitemesh.builder.SiteMeshFilterBuilder;
@@ -13,21 +14,31 @@ import com.sqq.sitemesh.FreeSiteMeshTagRuleBundle;
  *  @author yuanren.le
  *
  */
-public class FreeSiteMeshFilter extends ConfigurableSiteMeshFilter{
-	
-	private SiteMeshExtendFilter extendFilter;
-	
-	@Override
-	protected void applyCustomConfiguration(SiteMeshFilterBuilder builder) {
-		builder.setTagRuleBundles(new FreeSiteMeshTagRuleBundle());
-		
-		extendFilter = new SiteMeshExtendFilter(
-				builder.getSelector(), builder.getContentProcessor());
-	}
+public class FreeSiteMeshFilter extends ConfigurableSiteMeshFilter {
 
-	@Override
-	protected Filter setup() throws ServletException {
-		super.setup();
-		return extendFilter;
-	}
+    private SiteMeshExtendFilter extendFilter;
+    private String prefix;
+
+    @Override
+    public void init(FilterConfig filterConfig) throws ServletException {
+        prefix = filterConfig.getInitParameter("freeSitemeshPrefix");
+        super.init(filterConfig);
+    }
+
+    @Override
+    protected void applyCustomConfiguration(SiteMeshFilterBuilder builder) {
+        if (prefix != null && prefix.trim().length() > 0) {
+            builder.setTagRuleBundles(new FreeSiteMeshTagRuleBundle(prefix));
+        } else {
+            builder.setTagRuleBundles(new FreeSiteMeshTagRuleBundle());
+        }
+
+        extendFilter = new SiteMeshExtendFilter(builder.getSelector(), builder.getContentProcessor());
+    }
+
+    @Override
+    protected Filter setup() throws ServletException {
+        super.setup();
+        return extendFilter;
+    }
 }

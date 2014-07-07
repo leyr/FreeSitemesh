@@ -12,16 +12,33 @@ import com.sqq.sitemesh.rule.SiteMeshTemplateTagRule;
 
 public class FreeSiteMeshTagRuleBundle implements TagRuleBundle {
 
+    private static final String DEFAULT_PREFIX = "sm";
+
+    private String prefix = DEFAULT_PREFIX;
+
+    public FreeSiteMeshTagRuleBundle() {
+    }
+
+    public FreeSiteMeshTagRuleBundle(String prefix) {
+        if (prefix != null) {
+            this.prefix = prefix;
+        }
+    }
+
     public void install(State defaultState, ContentProperty contentProperty, SiteMeshContext siteMeshContext) {
-        defaultState.addRule("sm:insert", new SiteMeshInsertTagRule(siteMeshContext));
-        defaultState.addRule("sm:template",
+        defaultState.addRule(ruleKey("insert"), new SiteMeshInsertTagRule(siteMeshContext));
+        defaultState.addRule(ruleKey("template"),
                 new SiteMeshTemplateTagRule(contentProperty.getChild(Constants.TEMPLATE_PATH)));
-        defaultState.addRule("sm:component",
+        defaultState.addRule(ruleKey("component"),
                 new SiteMeshComponentTagRule(contentProperty.getChild(Constants.COMPONENTS)));
-        defaultState.addRule("sm:attr", new SiteMeshAttributeTagRule(siteMeshContext));
+        defaultState.addRule(ruleKey("attr"), new SiteMeshAttributeTagRule(siteMeshContext));
     }
 
     public void cleanUp(State defaultState, ContentProperty contentProperty, SiteMeshContext siteMeshContext) {
         // No op.
+    }
+
+    private String ruleKey(String key) {
+        return prefix + ":" + key;
     }
 }
